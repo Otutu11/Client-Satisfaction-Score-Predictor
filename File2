@@ -1,0 +1,64 @@
+import streamlit as st
+import numpy as np
+import pandas as pd
+from sklearn.ensemble import RandomForestRegressor
+
+# --- Generate Synthetic Data for Training ---
+np.random.seed(42)
+n_samples = 1000
+
+data = {
+    'Response_Time_Minutes': np.random.normal(15, 5, n_samples).clip(5, 40),
+    'Service_Quality': np.random.randint(1, 6, n_samples),
+    'Product_Quality': np.random.randint(1, 6, n_samples),
+    'Issue_Resolved': np.random.choice([0, 1], n_samples, p=[0.2, 0.8]),
+    'Customer_Loyalty_Years': np.random.randint(0, 10, n_samples),
+    'Support_Interactions': np.random.randint(1, 15, n_samples),
+}
+
+df = pd.DataFrame(data)
+
+df['Satisfaction_Score'] = (
+    10
+    - 0.05 * df['Response_Time_Minutes']
+    + 0.7 * df['Service_Quality']
+    + 0.5 * df['Product_Quality']
+    + 2.0 * df['Issue_Resolved']
+    + 0.1 * df['Customer_Loyalty_Years']
+    - 0.1 * df['Support_Interactions']
+    + np.random.normal(0, 1.0, n_samples)
+).clip(0, 10)
+
+X = df.drop(columns='Satisfaction_Score')
+y = df['Satisfaction_Score']
+
+model = RandomForestRegressor(n_estimators=100, random_state=42)
+model.fit(X, y)
+
+# --- Streamlit UI ---
+st.set_page_config(page_title="Client Satisfaction Predictor", layout="centered")
+st.title("🧠 Client Satisfaction Score Predictor")
+st.markdown("Fill in the details below to predict a customer's satisfaction score (0–10).")
+
+response_time = st.slider("⏱️ Response Time (minutes)", 5, 40, 15)
+service_quality = st.slider("💼 Service Quality (1-5)", 1, 5, 3)
+product_quality = st.slider("📦 Product Quality (1-5)", 1, 5, 3)
+issue_resolved = st.radio("✅ Was the issue resolved?", ["Yes", "No"])
+loyalty_years = st.slider("📆 Customer Loyalty (Years)", 0, 10, 2)
+support_interactions = st.slider("📞 Number of Support Interactions", 1, 15, 5)
+
+# Convert categorical input
+issue_resolved_binary = 1 if issue_resolved == "Yes" else 0
+
+input_data = pd.DataFrame([[
+    response_time, service_quality, product_quality,
+    issue_resolved_binary, loyalty_years, support_interactions
+]], columns=X.columns)
+
+# Prediction
+if st.button("🔮 Predict Satisfaction Score"):
+    prediction = model.predict(input_data)[0]
+    st.success(f"Predicted Satisfaction Score: **{prediction:.2f} / 10**")
+
+st.markdown("---")
+st.markdown("📊 *Powered by Random Forest and Synthetic Data*")
