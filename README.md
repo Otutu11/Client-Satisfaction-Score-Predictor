@@ -85,8 +85,8 @@ Contributions are welcome! Please:
 This project is licensed under the MIT License.
 👨‍💻 Author
 
-[Your Name] – [your.email@example.com]
-GitHub: @yourusername
+Charles Ugochukwu Akajiaku – 
+GitHub: @Akajiaku1 
 🌐 Demo (Optional)
 
 Deploy the app on Streamlit Cloud or locally with:
