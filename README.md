@@ -85,16 +85,12 @@ Contributions are welcome! Please:
 This project is licensed under the MIT License.
 👨‍💻 Author
 
-Charles Ugochukwu Akajiaku – 
-GitHub: @Akajiaku1 
-🌐 Demo (Optional)
+Otutu Anslem 
+GitHub:(https://github.com/Otutu11)
+
 
 Deploy the app on Streamlit Cloud or locally with:
 
 streamlit run app.py
 
-
----
-
-Let me know your GitHub username and email if you'd like me to personalize this for you, or generate a `requirements.txt` file too!
 
